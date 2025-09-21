@@ -3,19 +3,10 @@ package main
 import (
 	"fmt"
 	"io"
-	"math/rand"
 	"net/http"
+
+	"github.com/gealit/shortener/internal/service"
 )
-
-var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-func RandSeq(n int) string {
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
-}
 
 var UrlsMap map[string]string
 
@@ -40,7 +31,7 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 		// Закрываем тело запроса
 		defer r.Body.Close()
 
-		randStr := "/" + RandSeq(10)
+		randStr := "/" + service.RandSeq(10)
 		new_url := fmt.Sprintf("http://localhost:8080%s", randStr)
 
 		UrlsMap[randStr] = string(body)
